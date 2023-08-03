@@ -7,15 +7,11 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  Expanded customButton(
-    String text,
-    Color color,
-    void Function(String) onPressedFunction,
-  ) {
+  Expanded customButton(String text, Color color) {
     return Expanded(
       child: TextButton(
         onPressed: () {
-          onPressedFunction(text);
+          print(text);
         },
         style: TextButton.styleFrom(
           foregroundColor: color,
@@ -103,11 +99,11 @@ class MyApp extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          customButton('7', Colors.black, print),
-                          customButton('8', Colors.black, print),
-                          customButton('9', Colors.black, print),
-                          customButton('C', Colors.red, print),
-                          customButton('AC', Colors.red, print),
+                          customButton('7', Colors.black),
+                          customButton('8', Colors.black),
+                          customButton('9', Colors.black),
+                          customButton('C', Colors.red),
+                          customButton('AC', Colors.red),
                         ],
                       ),
                     ),
@@ -115,11 +111,11 @@ class MyApp extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          customButton('4', Colors.black, print),
-                          customButton('5', Colors.black, print),
-                          customButton('6', Colors.black, print),
-                          customButton('+', Colors.white, print),
-                          customButton('-', Colors.white, print),
+                          customButton('4', Colors.black),
+                          customButton('5', Colors.black),
+                          customButton('6', Colors.black),
+                          customButton('+', Colors.white),
+                          customButton('-', Colors.white),
                         ],
                       ),
                     ),
@@ -127,11 +123,11 @@ class MyApp extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          customButton('1', Colors.black, print),
-                          customButton('2', Colors.black, print),
-                          customButton('3', Colors.black, print),
-                          customButton('x', Colors.white, print),
-                          customButton('/', Colors.white, print),
+                          customButton('1', Colors.black),
+                          customButton('2', Colors.black),
+                          customButton('3', Colors.black),
+                          customButton('x', Colors.white),
+                          customButton('/', Colors.white),
                         ],
                       ),
                     ),
