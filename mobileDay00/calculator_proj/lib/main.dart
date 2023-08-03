@@ -1,21 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:function_tree/function_tree.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  String currentFormula = '0';
+  num result = 0;
+
+  void _updateFormula(String num) {
+    setState(() {
+      switch (num) {
+        case '=':
+          result = currentFormula.replaceAll('x', '*').interpret();
+        case 'AC':
+          currentFormula = '0';
+          result = 0;
+        case 'C':
+          if (currentFormula.length > 1) {
+            currentFormula =
+                currentFormula.substring(0, currentFormula.length - 1);
+          } else {
+            currentFormula = '0';
+          }
+        case '0':
+          if (currentFormula == '0' &&
+              (int.parse(num) <= 1 && int.parse(num) <= 9)) {
+            currentFormula = num;
+          } else if (currentFormula == '0' && num == '0') {
+            return;
+          } else {
+            currentFormula = '$currentFormula$num';
+          }
+        default:
+          if (currentFormula == '0') {
+            currentFormula = num;
+          } else {
+            currentFormula = '$currentFormula$num';
+          }
+      }
+    });
+  }
 
   Expanded customButton(
     String text,
     Color color,
-    void Function(String) onPressedFunction,
   ) {
     return Expanded(
       child: TextButton(
         onPressed: () {
-          onPressedFunction(text);
+          _updateFormula(text);
         },
         style: TextButton.styleFrom(
           foregroundColor: color,
@@ -32,24 +74,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // TRY THIS: Try running your application with "flutter run". You'll see
-          // the application has a blue toolbar. Then, without quitting the app,
-          // try changing the seedColor in the colorScheme below to Colors.green
-          // and then invoke "hot reload" (save your changes or press the "hot
-          // reload" button in a Flutter-supported IDE, or press "r" if you used
-          // the command line to start the app).
-          //
-          // Notice that the counter didn't reset back to zero; the application
-          // state is not lost during the reload. To reset the state, use hot
-          // restart instead.
-          //
-          // This works for code too, not just values: Most code changes can be
-          // tested with just a hot reload.
-          ),
+      title: 'Calculator',
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Calculator'),
@@ -62,10 +87,10 @@ class MyApp extends StatelessWidget {
               flex: 6,
               child: Container(
                 decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 159, 212, 255),
+                  color: Color.fromARGB(255, 118, 154, 182),
                 ),
                 padding: const EdgeInsets.all(24),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Column(
@@ -73,12 +98,12 @@ class MyApp extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          '0',
-                          style: TextStyle(fontSize: 24),
+                          currentFormula,
+                          style: const TextStyle(fontSize: 24),
                         ),
                         Text(
-                          '0',
-                          style: TextStyle(fontSize: 24),
+                          result.toString(),
+                          style: const TextStyle(fontSize: 24),
                         ),
                       ],
                     ),
@@ -90,10 +115,8 @@ class MyApp extends StatelessWidget {
               flex: 4,
               child: Container(
                 padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 110, 152, 187),
-                  border:
-                      Border.all(style: BorderStyle.solid, color: Colors.blue),
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 76, 105, 129),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -103,11 +126,11 @@ class MyApp extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          customButton('7', Colors.black, print),
-                          customButton('8', Colors.black, print),
-                          customButton('9', Colors.black, print),
-                          customButton('C', Colors.red, print),
-                          customButton('AC', Colors.red, print),
+                          customButton('7', Colors.black),
+                          customButton('8', Colors.black),
+                          customButton('9', Colors.black),
+                          customButton('C', Colors.red),
+                          customButton('AC', Colors.red),
                         ],
                       ),
                     ),
@@ -115,11 +138,11 @@ class MyApp extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          customButton('4', Colors.black, print),
-                          customButton('5', Colors.black, print),
-                          customButton('6', Colors.black, print),
-                          customButton('+', Colors.white, print),
-                          customButton('-', Colors.white, print),
+                          customButton('4', Colors.black),
+                          customButton('5', Colors.black),
+                          customButton('6', Colors.black),
+                          customButton('+', Colors.white),
+                          customButton('-', Colors.white),
                         ],
                       ),
                     ),
@@ -127,11 +150,11 @@ class MyApp extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          customButton('1', Colors.black, print),
-                          customButton('2', Colors.black, print),
-                          customButton('3', Colors.black, print),
-                          customButton('x', Colors.white, print),
-                          customButton('/', Colors.white, print),
+                          customButton('1', Colors.black),
+                          customButton('2', Colors.black),
+                          customButton('3', Colors.black),
+                          customButton('x', Colors.white),
+                          customButton('/', Colors.white),
                         ],
                       ),
                     ),
@@ -149,9 +172,9 @@ class MyApp extends StatelessWidget {
                               style: TextButton.styleFrom(
                                 foregroundColor: Colors.white,
                               ),
-                              child: Text(
+                              child: const Text(
                                 '',
-                                style: const TextStyle(fontSize: 16),
+                                style: TextStyle(fontSize: 16),
                               ),
                             ),
                           ),
